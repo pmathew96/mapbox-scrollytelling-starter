@@ -20,7 +20,7 @@ var chapters = {
         pitch: 52,
     },
     'part-4': {
-        center: [70.653880, 36.193232],
+        center: [95.659549, 24.003677],
         zoom: 9,
         bearing: 0,
         pitch: 0,
@@ -32,12 +32,30 @@ var map;
 window.onload = function() {
     map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/chetana11/cjdyiw4702xl02sqkqmc6gyyi',
+        style: 'mapbox://styles/chetana11/cje8bue6si3062smokrifgmmt',
         center: [82.8, 23.88],
         zoom: 4,
         bearing: 0,
         pitch: 0,
     });
+    map.on('click', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['earthquakes'] // replace this with the name of the layer
+  });
+
+  if (!features.length) {
+    return;
+  }
+
+  var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<h3>' + feature.properties.place + '</h3><p>' + feature.properties.mag + '</p>')
+    .setLngLat(feature.geometry.coordinates)
+    .addTo(map);
+});
+
 }
 
 // On every scroll event, check which element is on screen
@@ -70,3 +88,4 @@ function isElementOnScreen(id) {
     var bounds = element.getBoundingClientRect();
     return bounds.top < window.innerHeight && bounds.bottom > 0;
 }
+
