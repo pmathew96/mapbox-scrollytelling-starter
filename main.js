@@ -38,23 +38,59 @@ window.onload = function() {
         bearing: 0,
         pitch: 0,
     });
-    map.on('click', function(e) {
-  var features = map.queryRenderedFeatures(e.point, {
-    layers: ['earthquakes'] // replace this with the name of the layer
-  });
 
-  if (!features.length) {
-    return;
-  }
 
-  var feature = features[0];
-
-  var popup = new mapboxgl.Popup({ offset: [0, -15] })
-    .setLngLat(feature.geometry.coordinates)
-    .setHTML('<h3>' + feature.properties.place + '</h3><p>' + feature.properties.mag + '</p>')
-    .setLngLat(feature.geometry.coordinates)
-    .addTo(map);
+map.on('click', 'earthquakes', function(e){
+    var place = e.features[0].properties.place;
+    console.log(place)
+    if (place == "eastern Xizang-India border region"){
+        setActiveChapter('part-2');
+        var top = document.getElementById('part-2').offsetTop; //Getting Y of target element
+        window.scrollTo(0, top+5);         
+    }
+    
+    if (place == "Nepal-India border region"){
+        setActiveChapter('part-3');
+        var top = document.getElementById('part-3').offsetTop; //Getting Y of target element
+        window.scrollTo(0, top);         
+    }
+    if (place == "Myanmar"){
+        setActiveChapter('part-4');
+        var top = document.getElementById('part-4').offsetTop; //Getting Y of target element
+        window.scrollTo(0, top);         
+    }
 });
+    
+var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: true
+    });
+
+    map.on('mouseenter', 'earthquakes', function(e) {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer';
+
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.description;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates)
+            .setHTML('<h3>' + e.features[0].properties.place + '</h3><p>' + e.features[0].properties.mag + '</p>')
+            .addTo(map);
+    });
+
+    map.on('mouseleave', 'places', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+    });
 
 }
 
@@ -70,6 +106,7 @@ window.onscroll = function() {
         }
     }
 };
+
 
 var activeChapterName = 'part-1';
 function setActiveChapter(chapterName) {
