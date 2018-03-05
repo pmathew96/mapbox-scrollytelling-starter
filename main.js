@@ -83,7 +83,7 @@ var popup = new mapboxgl.Popup({
         // Populate the popup and set its coordinates
         // based on the feature found.
         popup.setLngLat(coordinates)
-            .setHTML('<h3>' + e.features[0].properties.place + '</h3><p>' + e.features[0].properties.mag + '</p>')
+            .setHTML('<h3>' + e.features[0].properties.place + '</h3><p>Magnitude: ' + e.features[0].properties.mag + '</p>')
             .addTo(map);
     });
 
