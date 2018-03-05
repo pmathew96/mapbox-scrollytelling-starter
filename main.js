@@ -87,7 +87,7 @@ var popup = new mapboxgl.Popup({
             .addTo(map);
     });
 
-    map.on('mouseleave', 'places', function() {
+    map.on('mouseleave', 'earthquakes', function() {
         map.getCanvas().style.cursor = '';
         popup.remove();
     });
