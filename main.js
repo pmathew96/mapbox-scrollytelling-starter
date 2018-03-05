@@ -9,9 +9,9 @@ var chapters = {
     },
     'part-2': {
         center: [96.420066, 28.365358],
-        zoom: 10,
+        zoom: 9,
         bearing: 0,
-        pitch: 0,
+        pitch: 52,
     },
     'part-3': {
         center: [86.586872, 26.873760],
@@ -23,7 +23,7 @@ var chapters = {
         center: [95.659549, 24.003677],
         zoom: 9,
         bearing: 0,
-        pitch: 0,
+        pitch: 52,
     }
 };
 
